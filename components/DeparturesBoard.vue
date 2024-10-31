@@ -1,7 +1,7 @@
 <template>
   <main>
     <DepartureHeader/>
-    <BoardWrapper/>
+    <BoardWrapper :flight-data="flightData"/>
   </main>
 </template>
 
@@ -9,7 +9,7 @@
 import axios from 'axios';
 
 import DepartureHeader from './DepartureHeader/DepartureHeader.vue';
-import BoardWrapper from './DepartureHeader/DepartureHeader.vue';
+import BoardWrapper from './BoardWrapper/BoardWrapper.vue';
 import { AllDeparture } from '~/types';
 
 export default {
