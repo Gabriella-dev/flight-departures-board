@@ -1,10 +1,21 @@
 <template>
   <div class="board-wrapper">
     <NavigationBar />
+    <!-- the UpdateStatusForm render Here -->
+    <UpdateStatusForm
+      v-if="selectedFlight"
+      :selected-flight="selectedFlight"
+      @status-updated="handleStatusUpdate"
+      @close-form="closeUpdateForm"
+    />
+
     <section>
-      <!-- Use flightData here, e.g., render a list -->
       <ul class="board-list">
-        <li v-for="flight in flightData" :key="flight.flightNumber">
+        <li
+          v-for="flight in flightData"
+          :key="flight.flightNumber"
+          @click="selectFlight(flight)"
+        >
           <BoardListItemCard
             :is-loading="isLoading"
             :scheduled-departure-date-time="flight.scheduledDepartureDateTime"
@@ -22,7 +33,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import axios from 'axios'
 import NavigationBar from '../NavigationBar/NavigationBar.vue'
+import UpdateStatusForm from '../UpdateStatusForm/UpdateStatusForm.vue'
 import BoardListItemCard from '../BoardListItemCard/BoardListItemCard.vue'
 import { AllDeparture } from '~/types'
 
@@ -31,6 +44,7 @@ export default defineComponent({
 
   components: {
     NavigationBar,
+    UpdateStatusForm,
     BoardListItemCard,
   },
   props: {
@@ -40,7 +54,39 @@ export default defineComponent({
     },
     isLoading: {
       type: Boolean,
-      required: true, 
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      selectedFlight: null as AllDeparture | null,
+    }
+  },
+  methods: {
+    selectFlight(flight: AllDeparture) {
+      // Select a new flight and show the form
+      this.selectedFlight = flight
+    },
+    closeUpdateForm() {
+      // Hide the form
+      this.selectedFlight = null
+    },
+    async handleStatusUpdate(newStatus: string) {
+      if (!this.selectedFlight) return
+
+      try {
+        // Example: Making an API call to update the specific flight status
+        const response = await axios.post('/api/update-flight-status', {
+          flightNumber: this.selectedFlight.flightNumber,
+          status: newStatus,
+        })
+        console.log('Status updated successfully:', response.data)
+        // Optionally, update the status locally
+        this.selectedFlight.status = newStatus
+      } catch (error) {
+        console.error('Failed to update flight status:', error)
+      }
     },
   },
 })
@@ -62,5 +108,10 @@ export default defineComponent({
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+.board-list :hover {
+  cursor: pointer;
+  background-color: rgb(29, 29, 39);
 }
 </style>

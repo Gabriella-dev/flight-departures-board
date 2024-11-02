@@ -8,17 +8,17 @@
     <button :class="['status', statusClass]">{{ status }}</button>
   </div>
   <div v-else class="board-list-item-card skeleton">
-    <div class="skeleton-line" style="width: 50%; height: 16px;"></div>
-    <div class="skeleton-line city-gate" style="width: 50%; height: 16px;"></div>
-    <div class="skeleton-line" style="width: 50%; height: 16px;"></div>
-    <div class="skeleton-line" style="width: 50%; height: 16px;"></div>
-    <div class="skeleton-line city-gate" style="width: 50%; height: 16px;"></div>
-    <div class="skeleton-line status" style="width: 50%; height: 32px;"></div>
+    <div class="skeleton-line" style="width: 50%; height: 16px"></div>
+    <div class="skeleton-line city-gate" style="width: 50%; height: 16px"></div>
+    <div class="skeleton-line" style="width: 50%; height: 16px"></div>
+    <div class="skeleton-line" style="width: 50%; height: 16px"></div>
+    <div class="skeleton-line city-gate" style="width: 50%; height: 16px"></div>
+    <div class="skeleton-line status" style="width: 50%; height: 32px"></div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BoardListItemCard',
@@ -55,7 +55,7 @@ export default Vue.extend({
   },
   computed: {
     statusClass(): string {
-      return this.getStatusClass(this.status);
+      return this.getStatusClass(this.status)
     },
   },
   methods: {
@@ -64,7 +64,7 @@ export default Vue.extend({
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
-      }).format(new Date(dateTime));
+      }).format(new Date(dateTime))
     },
     getStatusClass(status: String): string {
       const statusMap: { [key: string]: string } = {
@@ -74,12 +74,12 @@ export default Vue.extend({
         scheduled: 'scheduled',
         wait: 'wait-in-lounge',
         departing: 'departing',
-      };
-      const firstWord: string = status.split(' ')[0].toLowerCase();
-      return statusMap[firstWord] || 'status-other';
+      }
+      const firstWord: string = status.split(' ')[0].toLowerCase()
+      return statusMap[firstWord] || 'status-other'
     },
   },
-});
+})
 </script>
 
 <style scoped>
@@ -164,19 +164,17 @@ export default Vue.extend({
   color: #f9faf5;
 }
 
-
 .skeleton {
   display: grid;
   grid-template-columns: 1.2fr 1fr 0.9fr 1fr 0.7fr 1.3fr;
   align-items: center;
-  gap: 10px; 
+  gap: 10px;
 
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr 1.3fr;
     padding-left: 60px;
   }
 }
-
 
 .skeleton-line {
   background: linear-gradient(90deg, #bbbbbb 25%, #999999 50%, #bbbbbb 75%);

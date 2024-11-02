@@ -1,23 +1,22 @@
 <template>
-    <div class="header">
-        <HeaderLogo />
-        <h1>Departures</h1>
-    </div>
+  <div class="header">
+    <HeaderLogo />
+    <h1>Departures</h1>
+  </div>
 </template>
 
 <script lang="ts">
-import HeaderLogo from '../assets/Logo.vue';
+import HeaderLogo from '../assets/Logo.vue'
 
 export default {
-    name: 'DepartureHeader',
-    components: {
+  name: 'DepartureHeader',
+  components: {
     HeaderLogo,
   },
-};
+}
 </script>
 
 <style scoped>
-
 .header {
   display: flex;
   align-items: center;
@@ -27,5 +26,4 @@ export default {
   gap: 20px;
   margin-bottom: 2px;
 }
-
 </style>
