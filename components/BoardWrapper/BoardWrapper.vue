@@ -1,7 +1,6 @@
 <template>
   <div class="board-wrapper">
     <NavigationBar />
-    <!-- the UpdateStatusForm render Here -->
     <UpdateStatusForm
       v-if="selectedFlight"
       :selected-flight="selectedFlight"

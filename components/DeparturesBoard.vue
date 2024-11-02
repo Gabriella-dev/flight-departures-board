@@ -21,6 +21,7 @@ import DepartureHeader from './DepartureHeader/DepartureHeader.vue'
 import BoardWrapper from './BoardWrapper/BoardWrapper.vue'
 import SadAirplane from './assets/SadAirplane.vue'
 import { AllDeparture } from '~/types'
+import { handleError } from '~/utils/errorHandler'
 
 export default defineComponent({
   name: 'DeparturesBoard',
@@ -44,8 +45,7 @@ export default defineComponent({
         this.errorMessage =
           'We’re experiencing a temporary issue with the flight details. Please check back soon for updates on all flights.'
       } else {
-        console.error('An unknown error occurred')
-        this.errorMessage = 'An unknown error occurred. Please try again later.'
+        this.errorMessage =  handleError(error)
       }
     } finally {
       this.isLoading = false
@@ -63,14 +63,8 @@ export default defineComponent({
     async getFlightData(): Promise<AllDeparture[]> {
       const url =
         'https://6315ae3e5b85ba9b11e4cb85.mockapi.io/departures/Flightdata'
-      try {
-        const { data } = await axios.get(url)
-        console.log(data.allDepartures)
-        return data.allDepartures
-      } catch (error) {
-        console.error('Failed to fetch flight data', error)
-        throw new Error('Failed to fetch flight data')
-      }
+      const { data } = await axios.get(url);
+      return data.allDepartures;
     },
     closeErrorModal() {
       this.errorMessage = ''

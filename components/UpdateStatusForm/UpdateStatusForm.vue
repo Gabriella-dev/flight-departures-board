@@ -26,11 +26,14 @@
           placeholder="Write your own status"
           maxlength="25"
           required
+          class="custom-status-input"
         />
         <p v-if="warningMessage" class="warning">{{ warningMessage }}</p>
       </div>
+      <div class="buttons">
       <button type="submit">Update Status</button>
       <button type="button" @click="closeForm">Close</button>
+    </div>
     </form>
   </div>
 </template>
@@ -61,7 +64,7 @@ export default defineComponent({
     customStatus(newVal) {
       // Show a warning if the custom status exceeds 20 characters
       if (newVal.length > 20) {
-        this.warningMessage = 'Custom status must be 20 characters or fewer.'
+        this.warningMessage = '!Custom status must be 20 characters or fewer.'
       } else {
         this.warningMessage = '' // Clear the warning if within limit
       }
@@ -101,10 +104,15 @@ export default defineComponent({
   flex-direction: column;
   border-radius: 10px;
   margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 20px;
+ 
+box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .form-group {
   margin-bottom: 15px;
 }
+
 
 label {
   display: block;
@@ -113,7 +121,7 @@ label {
 
 select {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -130,5 +138,24 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+input {
+  width: 60%;
+  height: 30px;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  @media (min-width: 768px) {
+    width: 40%;
+    padding: 5px;
+  }
+}
+
+.warning {
+  color: rgb(255, 47, 0);
+  font-size: 1rem;
 }
 </style>
