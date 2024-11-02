@@ -1,22 +1,32 @@
 <template>
-  <div class="board-list-item-card">
-    <p>
-      {{ formatDateTime(new Date(scheduledDepartureDateTime)) }}
-    </p>
+  <div v-if="!isLoading" class="board-list-item-card">
+    <p>{{ formatDateTime(new Date(scheduledDepartureDateTime)) }}</p>
     <p class="city-gate">{{ cityName }}</p>
     <p>{{ airportCode }}</p>
     <p>{{ airlineName }}</p>
     <p class="city-gate">{{ gateNumber || 'TBD' }}</p>
     <button :class="['status', statusClass]">{{ status }}</button>
   </div>
+  <div v-else class="board-list-item-card skeleton">
+    <div class="skeleton-line" style="width: 50%; height: 16px;"></div>
+    <div class="skeleton-line city-gate" style="width: 50%; height: 16px;"></div>
+    <div class="skeleton-line" style="width: 50%; height: 16px;"></div>
+    <div class="skeleton-line" style="width: 50%; height: 16px;"></div>
+    <div class="skeleton-line city-gate" style="width: 50%; height: 16px;"></div>
+    <div class="skeleton-line status" style="width: 50%; height: 32px;"></div>
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   name: 'BoardListItemCard',
   props: {
+    isLoading: {
+      type: Boolean,
+      required: true,
+    },
     scheduledDepartureDateTime: {
       type: String,
       required: true,
@@ -43,22 +53,19 @@ export default Vue.extend({
       required: true,
     },
   },
-
   computed: {
     statusClass(): string {
-      return this.getStatusClass(this.status)
+      return this.getStatusClass(this.status);
     },
   },
-
   methods: {
     formatDateTime(dateTime: Date): string {
       return new Intl.DateTimeFormat('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
-      }).format(new Date(dateTime))
+      }).format(new Date(dateTime));
     },
-
     getStatusClass(status: String): string {
       const statusMap: { [key: string]: string } = {
         departed: 'departed',
@@ -67,12 +74,12 @@ export default Vue.extend({
         scheduled: 'scheduled',
         wait: 'wait-in-lounge',
         departing: 'departing',
-      }
-      const firstWord: string = status.split(' ')[0].toLowerCase()
-      return statusMap[firstWord] || 'status-other'
+      };
+      const firstWord: string = status.split(' ')[0].toLowerCase();
+      return statusMap[firstWord] || 'status-other';
     },
   },
-})
+});
 </script>
 
 <style scoped>
@@ -155,5 +162,41 @@ export default Vue.extend({
 .status-other {
   background: linear-gradient(to right, #9b0606 5%, #dddddd 100%);
   color: #f9faf5;
+}
+
+
+.skeleton {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.9fr 1fr 0.7fr 1.3fr;
+  align-items: center;
+  gap: 10px; 
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr 1.3fr;
+    padding-left: 60px;
+  }
+}
+
+
+.skeleton-line {
+  background: linear-gradient(90deg, #bbbbbb 25%, #999999 50%, #bbbbbb 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+  height: 16px;
+}
+
+.skeleton-line.status {
+  border-radius: 20px;
+  height: 32px;
+}
+
+@keyframes loading {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
 }
 </style>

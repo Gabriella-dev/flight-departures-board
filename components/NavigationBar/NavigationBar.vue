@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-// import sortStatusData from './statusData'
 
 export default defineComponent({
   name: 'NavigationBar',

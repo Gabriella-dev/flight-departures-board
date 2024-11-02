@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import HeaderLogo from '../Logo.vue';
+import HeaderLogo from '../assets/Logo.vue';
 
 export default {
     name: 'DepartureHeader',

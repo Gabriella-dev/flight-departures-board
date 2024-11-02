@@ -6,6 +6,7 @@
       <ul class="board-list">
         <li v-for="flight in flightData" :key="flight.flightNumber">
           <BoardListItemCard
+            :is-loading="isLoading"
             :scheduled-departure-date-time="flight.scheduledDepartureDateTime"
             :city-name="flight.arrivalAirport.cityName"
             :airport-code="flight.flightNumber"
@@ -36,6 +37,10 @@ export default defineComponent({
     flightData: {
       type: Array as PropType<AllDeparture[]>,
       required: true,
+    },
+    isLoading: {
+      type: Boolean,
+      required: true, 
     },
   },
 })
