@@ -30,10 +30,8 @@
         />
         <p v-if="warningMessage" class="warning">{{ warningMessage }}</p>
       </div>
-      <div class="buttons">
       <button type="submit">Update Status</button>
       <button type="button" @click="closeForm">Close</button>
-    </div>
     </form>
   </div>
 </template>
@@ -86,9 +84,11 @@ export default defineComponent({
       this.$emit('status-updated', statusToUpdate)
       this.resetForm() // Reset the form after submission
     },
+
     closeForm() {
       this.$emit('close-form') // Emit event to hide the form
     },
+    
     resetForm() {
       this.status = ''
       this.customStatus = '' // Reset custom status
@@ -106,13 +106,12 @@ export default defineComponent({
   margin-bottom: 20px;
   border: 1px solid #ccc;
   padding: 20px;
- 
-box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .form-group {
   margin-bottom: 15px;
 }
-
 
 label {
   display: block;

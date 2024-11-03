@@ -11,7 +11,7 @@
     <section>
       <ul class="board-list">
         <li
-          v-for="flight in flightData"
+          v-for="flight in sortedFlightData"
           :key="flight.flightNumber"
           @click="selectFlight(flight)"
         >
@@ -62,6 +62,28 @@ export default defineComponent({
       selectedFlight: null as AllDeparture | null,
     }
   },
+  computed: {
+    sortedFlightData() {
+      return [...this.flightData].sort((a, b) => {
+        const dateA = new Date(a.scheduledDepartureDateTime).getTime()
+        const dateB = new Date(b.scheduledDepartureDateTime).getTime()
+        return dateA - dateB
+      })
+    },
+  },
+
+  watch: {
+    flightData(newData) {
+      console.log('Flight Data updated:', newData)
+    },
+  },
+
+  mounted() {
+    console.log('Flight Data on mount:', this.flightData)
+  },
+
+
+
   methods: {
     selectFlight(flight: AllDeparture) {
       // Select a new flight and show the form
