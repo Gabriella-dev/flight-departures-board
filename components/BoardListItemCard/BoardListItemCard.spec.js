@@ -1,16 +1,17 @@
 import { shallowMount } from '@vue/test-utils'
 import BoardListItemCard from './BoardListItemCard.vue'
 
-describe('BoardListItemCard.vue', () => {
-  const props = {
-    scheduledDepartureDateTime: '2024-11-01T15:00:00Z',
-    cityName: 'New York',
-    airportCode: 'JFK',
-    airlineName: 'Airline XYZ',
-    gateNumber: 'A1',
-    status: 'departed',
-  }
+const props = {
+  scheduledDepartureDateTime: '2024-11-01T15:00:00Z',
+  cityName: 'New York',
+  airportCode: 'JFK',
+  airlineName: 'Airline XYZ',
+  gateNumber: 'A1',
+  status: 'departed',
+  isLoading: false,
+}
 
+describe('BoardListItemCard.vue', () => {
   it('renders the correct markup', () => {
     const wrapper = shallowMount(BoardListItemCard, {
       propsData: props,
@@ -18,15 +19,9 @@ describe('BoardListItemCard.vue', () => {
 
     expect(wrapper.find('p').text()).toContain('15:00')
     expect(wrapper.findAll('.city-gate').at(0).text().trim()).toBe('New York')
-    expect(wrapper.findAll('p').at(2).text().trim()).toBe('JFK') // Adjust index for airport code
-
-    // Test for airline name
-    expect(wrapper.findAll('p').at(3).text().trim()).toBe('Airline XYZ') // Adjust index for airline name
-
-    // Test for gate number
+    expect(wrapper.findAll('p').at(2).text().trim()).toBe('JFK')
+    expect(wrapper.findAll('p').at(3).text().trim()).toBe('Airline XYZ')
     expect(wrapper.findAll('.city-gate').at(1).text().trim()).toBe('A1')
-
-    // Test for status
     expect(wrapper.find('.status').text().trim()).toBe('departed')
   })
 
@@ -54,12 +49,35 @@ describe('BoardListItemCard.vue', () => {
     const formatDateTimeSpy = jest.spyOn(wrapper.vm, 'formatDateTime')
 
     // Call the method from the component to trigger the internal call
-    wrapper.vm.formatDateTime(new Date(props.scheduledDepartureDateTime)) // Pass Date object directly
-
+    wrapper.vm.formatDateTime(new Date(props.scheduledDepartureDateTime))
     // Check that the method was called with the correct Date object
-    expect(formatDateTimeSpy).toHaveBeenCalledWith(expect.any(Date)) // Check that it was called with a Date object
+    expect(formatDateTimeSpy).toHaveBeenCalledWith(expect.any(Date))
     expect(formatDateTimeSpy.mock.calls[0][0].toISOString()).toBe(
       new Date(props.scheduledDepartureDateTime).toISOString()
     )
+  })
+  it('renders skeleton lines when isLoading is true', () => {
+    const wrapper = shallowMount(BoardListItemCard, {
+      propsData: { ...props, isLoading: true },
+    })
+    expect(wrapper.find('.skeleton').exists()).toBe(true)
+    expect(wrapper.findAll('.skeleton-line').length).toBeGreaterThan(0)
+  })
+
+  it('applies "status-other" class for unknown status', () => {
+    const wrapper = shallowMount(BoardListItemCard, {
+      propsData: { ...props, status: 'unknown status' },
+    })
+    expect(wrapper.find('.status').classes()).toContain('status-other')
+  })
+
+  it('formats date correctly with formatDateTime method', () => {
+    const wrapper = shallowMount(BoardListItemCard, {
+      propsData: props,
+    })
+    const formattedTime = wrapper.vm.formatDateTime(
+      new Date('2024-11-01T15:00:00Z')
+    )
+    expect(formattedTime).toBe('15:00')
   })
 })

@@ -17,14 +17,14 @@ export default defineComponent({
 
   methods: {
     sortByTime() {
-      // Add tracking logic here
+
       this.$emit('sort', 'time')
     },
     sortByCity() {
-      // Add tracking logic here
+
       this.$emit('sort', 'city')
     },
-    // todo add other sorting methods and tracking logic for them
+    // todo add sorting methods and tracking logic for them
   },
 })
 </script>

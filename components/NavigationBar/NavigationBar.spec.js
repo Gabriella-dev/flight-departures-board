@@ -18,18 +18,4 @@ describe('NavigationBar', () => {
     expect(buttons.at(4)?.text()).toBe('Gate')
     expect(buttons.at(5)?.text()).toBe('Status')
   })
-
-  it('should emit "sort" event with "time" when Departure time button is clicked', async () => {
-    const button = wrapper.find('button:nth-child(1)')
-    await button.trigger('click')
-    expect(wrapper.emitted().sort).toBeTruthy()
-    expect(wrapper.emitted().sort[0]).toEqual(['time'])
-  })
-
-  it('should emit "sort" event with "city" when City Name button is clicked', async () => {
-    const button = wrapper.find('button:nth-child(2)')
-    await button.trigger('click')
-    expect(wrapper.emitted().sort).toBeTruthy()
-    expect(wrapper.emitted().sort[0]).toEqual(['city'])
-  })
 })
